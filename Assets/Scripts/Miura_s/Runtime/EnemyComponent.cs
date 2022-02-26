@@ -7,18 +7,18 @@ using UnityEngine;
 
 namespace GameJam.Miura
 {
-    using AnimationState = GameJam.Miura.EnemyAnimation.AnimationState;
+    using AnimationState = EnemyAnimation.AnimationState;
 
     public class EnemyComponent : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject player;
-
         [SerializeField]
         private Animator animator;
 
         [SerializeField]
         private EnemySettings enemySettings;
+
+        [SerializeField]
+        private MapSettings mapSettings;
 
         private EnemyAnimation enemyAnimation;
 
@@ -26,9 +26,17 @@ namespace GameJam.Miura
 
         private CompositeDisposable disposables;
 
+        private Vector3 goalPosition;
+
+        private int targetIndex;
+
+        private Subject<Unit> moveEnd;
+
         public BoolReactiveProperty IsDeadRp { get; private set; }
 
         public bool IsDead { get => IsDeadRp.Value; set => IsDeadRp.Value = value; }
+
+        public GameObject Target => enemySettings.TargetObjects[targetIndex];
 
         private void Start()
         {
@@ -40,14 +48,14 @@ namespace GameJam.Miura
 
             IsDeadRp = new BoolReactiveProperty(false);
 
+            moveEnd = new Subject<Unit>();
+
             enemyAttack.OnAttacked
                 .Subscribe(_ =>
                 {
                     enemyAnimation.State = AnimationState.Attack;
                 })
                 .AddTo(disposables);
-
-
 
             IsDeadRp
                 .Where(value => value == true)
@@ -56,6 +64,32 @@ namespace GameJam.Miura
                     enemyAnimation.State = AnimationState.Dead;
                 })
                 .AddTo(disposables);
+
+            enemyAnimation.StateRp
+                .Where(state => state.HasFlag(AnimationState.Move))
+                .Subscribe(state =>
+                {
+                    var randomObj = new System.Random();
+
+                    goalPosition = CalculationGoalPos(randomObj);
+
+                    var dir = goalPosition - transform.position;
+                    var rotation = Quaternion.LookRotation(dir, Vector3.up);
+
+                    transform.rotation = rotation;
+
+                    targetIndex = randomObj.Next(0, enemySettings.TargetObjects.Count);
+                })
+                .AddTo(disposables);
+
+            moveEnd
+                .Subscribe(_ =>
+                {
+                    var dir = Target.transform.position - transform.position;
+                    var rotation = Quaternion.LookRotation(dir, Vector3.up);
+
+                    transform.rotation = rotation;
+                });
 
             // Enemy を消すときに使用
             enemyAnimation.OnDead
@@ -68,6 +102,7 @@ namespace GameJam.Miura
         private void Update()
         {
             CreateAttackEffect();
+            OnMove();
         }
 
         private void CreateAttackEffect()
@@ -82,7 +117,8 @@ namespace GameJam.Miura
 
             var position = transform.position + forward + up;
 
-            var dir = player.transform.position - position;
+            var targetPos = Target.transform.position + new Vector3(0, Target.transform.localScale.y, 0);
+            var dir = targetPos - position;
             var rotation = Quaternion.LookRotation(dir, Vector3.up);
 
             var effect = Instantiate(enemySettings.RangeAttackEffect, position, rotation);
@@ -90,6 +126,58 @@ namespace GameJam.Miura
             Destroy(effect, 2f);
 
             enemyAttack.IsAttack = false;
+        }
+
+        private void OnMove()
+        {
+            if (enemyAnimation.State.HasFlag(AnimationState.Move))
+            {
+                float distance = (transform.position - Target.transform.position).sqrMagnitude;
+
+                var minDist = enemySettings.TargetMinDistance * 10;
+
+                transform.position = Vector3.MoveTowards(transform.position, goalPosition, enemySettings.MoveSpeed);
+
+#if UNITY_EDITOR
+                if (enemySettings.DebugMode)
+                {
+                    Debug.Log($"標的{Target.name}との距離({distance * 0.1f})");
+                }
+#endif
+
+                if (transform.position == goalPosition)
+                {
+                    enemyAnimation.State = AnimationState.Idle;
+
+                    moveEnd.OnNext(Unit.Default);
+                }
+            }
+        }
+
+        private Vector3 CalculationGoalPos(System.Random randomObj)
+        {
+            var pos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+
+            float x = randomObj.Next((int)mapSettings.OriginPosition.x, (int)mapSettings.EndPosition.x);
+            x = (float)x + (float)randomObj.NextDouble();
+
+            pos.x = Mathf.Clamp(x, mapSettings.OriginPosition.x, mapSettings.EndPosition.x);
+
+            float z = randomObj.Next((int)mapSettings.OriginPosition.z, (int)mapSettings.EndPosition.z);
+            z = (float)z + (float)randomObj.NextDouble();
+
+            pos.z = Mathf.Clamp(z, mapSettings.OriginPosition.z, mapSettings.EndPosition.z);
+
+            float distance = (pos - Target.transform.position).sqrMagnitude;
+
+            var minDist = enemySettings.TargetMinDistance * 10;
+
+            if (distance < minDist)
+            {
+                return CalculationGoalPos(randomObj);
+            }
+
+            return pos;
         }
     }
 
@@ -166,7 +254,7 @@ namespace GameJam.Miura
                 .Delay(TimeSpan.FromSeconds(endTime[(int)AnimationState.Attack]))
                 .Subscribe(_ =>
                 {
-                    State = AnimationState.Idle;
+                    State = AnimationState.Move;
                 })
                 .AddTo(disposables);
 
@@ -212,12 +300,5 @@ namespace GameJam.Miura
         public Subject<Unit> OnAttacked { get; }
 
         public bool IsAttack { get; set; }
-    }
-
-    public class EnemyMove
-    {
-        public EnemyMove(EnemySettings enemySettings)
-        {
-        }
     }
 }

@@ -8,12 +8,35 @@ using UnityEngine;
 public class EnemySettings : ScriptableObject
 {
     [SerializeField]
+    [Header("デバッグ用ログの表示")]
+    private bool debugMode;
+
+    [SerializeField]
+    [Header("標的のオブジェクト")]
+    private List<GameObject> targets;
+
+    [SerializeField]
     [Header("遠距離の攻撃間隔")]
     private float rangeAttackInterval;
 
     [SerializeField]
     [Header("遠距離の攻撃のエフェクト")]
     private GameObject rangeAttackEffect;
+
+    [SerializeField]
+    [Header("遠距離タイプの移動速度")]
+    private float moveSpeed;
+
+    [SerializeField]
+    [Header("標的との最小距離")]
+    private float targetMinDistance;
+
+    public bool DebugMode => debugMode;
+
+    /// <summary>
+    /// 攻撃対象
+    /// </summary>
+    public List<GameObject> TargetObjects => targets;
 
     /// <summary>
     /// 遠距離の攻撃間隔
@@ -24,6 +47,16 @@ public class EnemySettings : ScriptableObject
     /// 遠距離攻撃のエフェクト
     /// </summary>
     public GameObject RangeAttackEffect => rangeAttackEffect;
+
+    /// <summary>
+    /// 遠距離の移動速度
+    /// </summary>
+    public float MoveSpeed => moveSpeed;
+
+    /// <summary>
+    /// 標的との最小距離
+    /// </summary>
+    public float TargetMinDistance => targetMinDistance;
 
     [MenuItem("GameJam/Create/EnemySettings")]
     public static void CreateAsset()
