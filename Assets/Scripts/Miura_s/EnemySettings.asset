@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: EnemySettings
   m_EditorClassIdentifier: 
   rangeAttackInterval: 3
-  rangeAttackEffect: {fileID: 1189473170883990, guid: aa5a629ac38ea7e458e01f129df1437e,
+  rangeAttackEffect: {fileID: 1136050290210760, guid: 113db6e6fdd147b4486296ad1c182dfe,
     type: 3}

@@ -213,4 +213,11 @@ namespace GameJam.Miura
 
         public bool IsAttack { get; set; }
     }
+
+    public class EnemyMove
+    {
+        public EnemyMove(EnemySettings enemySettings)
+        {
+        }
+    }
 }
