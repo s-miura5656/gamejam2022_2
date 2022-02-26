@@ -2012,9 +2012,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ff9a22082a3e824fbb468cece93018c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   animator: {fileID: 9069589363485806760}
   enemySettings: {fileID: 11400000, guid: 18b1983ffc5bee54a8f37891954e007e, type: 2}
+  mapSettings: {fileID: 11400000, guid: 197a481b486f7914bb193cb8c13f70bd, type: 2}
 --- !u!1 &9069589363493102438
 GameObject:
   m_ObjectHideFlags: 0
