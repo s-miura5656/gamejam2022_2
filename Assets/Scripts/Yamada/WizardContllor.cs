@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WizardContllor : MonoBehaviour
 {
@@ -9,7 +10,11 @@ public class WizardContllor : MonoBehaviour
     PlayerBulletManager playerBulletManager;
     [SerializeField,Header("アニメーションコントロール")]
     private Animator wizardAnimator = null;
+    [SerializeField, Header("HPUI")]
+    private Slider HPUI;
 
+    [SerializeField, Header("プレイヤーの最大ライフポイント")]
+    public int maxLifePoint = 5;
     [SerializeField,Header("プレイヤーのライフポイント")]
     public int lifePoint = 5;
     [SerializeField, Header("プレイヤーの死亡判定")]
@@ -29,6 +34,11 @@ public class WizardContllor : MonoBehaviour
     private float maxLimitPosition = 5.0f;
     [SerializeField]
     private float minLimitPosition = -5.0f;
+
+    private void Start()
+    {
+        HPUI.value = maxLifePoint;
+    }
     void Update()
     {
         if(Time.time > shotTimeTrigger) {
@@ -54,6 +64,7 @@ public class WizardContllor : MonoBehaviour
         {
             isDead = true;
         }
+        HPUI.value = lifePoint;
     }
 
     private void OnTriggerEnter(Collider other)

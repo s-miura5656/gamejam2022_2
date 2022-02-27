@@ -89,4 +89,12 @@ public class PlayerContllor : MonoBehaviour
             }
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Bullet")
+        {
+            other.gameObject.SetActive(false);
+        }
+    }
 }

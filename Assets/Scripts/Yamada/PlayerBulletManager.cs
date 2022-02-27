@@ -27,7 +27,7 @@ public class PlayerBulletManager : MonoBehaviour
         PlayerBaseBullet playerBaseBullet = playerBulletPool.Rent();
         playerBaseBullet.isdestroy = false;
         playerBaseBullet.playerpos = setpos;
-        playerBaseBullet.transform.position = setpos;
+        playerBaseBullet.transform.position = new Vector3(setpos.x, setpos.y + 2.0f, setpos.z);
         playerBaseBullets.Add(playerBaseBullet);
     }
 
