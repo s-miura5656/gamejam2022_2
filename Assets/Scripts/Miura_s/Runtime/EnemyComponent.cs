@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +38,9 @@ namespace GameJam.Miura
 
         public bool IsRemove { get; private set; }
 
-        public GameObject Target => enemySettings.TargetObjects[targetIndex];
+        public List<GameObject> TargetObjects { get; private set; }
+
+        public GameObject Target => TargetObjects[targetIndex];
 
         public EnemySettings EnemySettings => enemySettings;
 
@@ -64,6 +66,7 @@ namespace GameJam.Miura
             transform.position = enemySettings.CreatePosition;
             IsDead = false;
             IsRemove = false;
+
             RegisterCallbacks();
         }
 
@@ -114,7 +117,7 @@ namespace GameJam.Miura
 
                     transform.rotation = rotation;
 
-                    targetIndex = randomObj.Next(0, enemySettings.TargetObjects.Count);
+                    targetIndex = randomObj.Next(0, TargetObjects.Count);
                 })
                 .AddTo(disposables);
 
@@ -187,7 +190,7 @@ namespace GameJam.Miura
 #if UNITY_EDITOR
                 if (enemySettings.DebugMode)
                 {
-                    Debug.Log($"ïWìI{Target.name}Ç∆ÇÃãóó£({distance * 0.1f})");
+                    Debug.Log($"Ê®ôÁöÑ{Target.name}„Å®„ÅÆË∑ùÈõ¢({distance * 0.1f})");
                 }
 #endif
 
@@ -206,16 +209,13 @@ namespace GameJam.Miura
 
             float x = randomObj.Next((int)mapSettings.OriginPosition.x, (int)mapSettings.EndPosition.x);
             x = (float)x + (float)randomObj.NextDouble();
-
             pos.x = Mathf.Clamp(x, mapSettings.OriginPosition.x, mapSettings.EndPosition.x);
 
             float z = randomObj.Next((int)mapSettings.OriginPosition.z, (int)mapSettings.EndPosition.z);
             z = (float)z + (float)randomObj.NextDouble();
-
             pos.z = Mathf.Clamp(z, mapSettings.OriginPosition.z, mapSettings.EndPosition.z);
 
             float distance = (pos - Target.transform.position).sqrMagnitude;
-
             var minDist = enemySettings.TargetMinDistance * 10;
 
             if (distance < minDist)

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
@@ -39,7 +39,10 @@ namespace GameJam.Miura
 
         public void InvokeRangeEnemy()
         {
-            Enemys.Add(enemyFactory.Rent());
+            var enemy = enemyFactory.Rent();
+            enemy.TargetObjects.AddRange(GameObject.FindGameObjectsWithTag("Player"));
+
+            Enemys.Add(enemy);
         }
     }
 

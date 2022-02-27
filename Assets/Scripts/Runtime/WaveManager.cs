@@ -19,6 +19,11 @@ public class WaveManager : MonoBehaviour
 
     public Subject<Unit> OnWaveStart { get; private set; }
 
+    public void WaveStart()
+    {
+        OnWaveStart.OnNext(Unit.Default);
+    }
+
     private void Awake()
     {
         OnWaveStart = new Subject<Unit>();
@@ -26,7 +31,7 @@ public class WaveManager : MonoBehaviour
         enemyFactoryComponent = GameObject.Find("EnemyFactory").GetComponent<EnemyFactoryComponent>();
     }
 
-    void Start()
+    private void Start()
     {
         sliderManager.mainSlider.value = 0;
 
@@ -55,10 +60,5 @@ public class WaveManager : MonoBehaviour
                 WaveStart();
             })
             .AddTo(this);
-    }
-
-    public void WaveStart()
-    {
-        OnWaveStart.OnNext(Unit.Default);
     }
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,40 +10,34 @@ namespace GameJam.Miura
     public class EnemySettings : ScriptableObject
     {
         [SerializeField]
-        //[Header("ƒfƒoƒbƒO—pƒƒO‚Ì•\¦")]
+        //[Header("ãƒ‡ãƒãƒƒã‚°ç”¨ãƒ­ã‚°ã®è¡¨ç¤º")]
         private bool debugMode;
 
         [SerializeField]
-        //[Header("•W“I‚ÌƒIƒuƒWƒFƒNƒg")]
-        private List<GameObject> targets;
-
-        [SerializeField]
-        //[Header("‰“‹——£‚Ì“G‚ÌƒvƒŒƒnƒu")]
+        //[Header("é è·é›¢ã®æ•µã®ãƒ—ãƒ¬ãƒãƒ–")]
         private GameObject rangePrefab;
 
         [SerializeField]
-        //[Header("‰“‹——£‚ÌUŒ‚ŠÔŠu")]
+        //[Header("é è·é›¢ã®æ”»æ’ƒé–“éš”")]
         private float rangeAttackInterval;
 
         [SerializeField]
-        //[Header("‰“‹——£‚ÌUŒ‚‚ÌƒGƒtƒFƒNƒg")]
+        //[Header("é è·é›¢ã®æ”»æ’ƒã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ")]
         private GameObject rangeAttackEffect;
 
         [SerializeField]
-        //[Header("‰“‹——£ƒ^ƒCƒv‚ÌˆÚ“®‘¬“x")]
+        //[Header("é è·é›¢ã‚¿ã‚¤ãƒ—ã®ç§»å‹•é€Ÿåº¦")]
         private float moveSpeed;
 
         [SerializeField]
-        //[Header("•W“I‚Æ‚ÌÅ¬‹——£")]
+        //[Header("æ¨™çš„ã¨ã®æœ€å°è·é›¢")]
         private float targetMinDistance;
 
         [SerializeField]
-        //[Header("¶¬’n“_iƒXƒ|[ƒ“ˆÊ’uj")]
+        //[Header("ç”Ÿæˆåœ°ç‚¹ï¼ˆã‚¹ãƒãƒ¼ãƒ³ä½ç½®ï¼‰")]
         private Vector3 createPosition;
 
         public bool DebugMode => debugMode;
-
-        public List<GameObject> TargetObjects => targets;
 
         public GameObject RangePrefab => rangePrefab;
 
