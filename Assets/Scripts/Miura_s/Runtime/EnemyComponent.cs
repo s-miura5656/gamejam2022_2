@@ -36,21 +36,53 @@ namespace GameJam.Miura
 
         public bool IsDead { get => IsDeadRp.Value; set => IsDeadRp.Value = value; }
 
+        public bool IsRemove { get; private set; }
+
         public GameObject Target => enemySettings.TargetObjects[targetIndex];
 
-        private void Start()
+        public EnemySettings EnemySettings => enemySettings;
+
+        private void Awake()
+        {
+            disposables = new CompositeDisposable();
+            IsDeadRp = new BoolReactiveProperty(false);
+            IsRemove = false;
+            moveEnd = new Subject<Unit>();
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                IsDead = true;
+            }
+
+            OnMove();
+            CreateAttackEffect();
+        }
+
+        private void OnEnable()
         {
             enemyAnimation = new EnemyAnimation(animator);
-
             enemyAttack = new EnemyAttack(enemySettings);
+            transform.position = enemySettings.CreatePosition;
+            IsDead = false;
+            IsRemove = false;
+            RegisterCallbacks();
+        }
 
-            disposables = new CompositeDisposable();
+        private void OnDisable()
+        {
+            UnregisterCallbacks();
 
-            IsDeadRp = new BoolReactiveProperty(false);
+            enemyAnimation = null;
+            enemyAttack = null;
+        }
 
-            moveEnd = new Subject<Unit>();
-
+        private void RegisterCallbacks()
+        {
             enemyAttack.OnAttacked
+                .Where(_ => enemyAnimation.State != AnimationState.Dead)
                 .Subscribe(_ =>
                 {
                     enemyAnimation.State = AnimationState.Attack;
@@ -89,24 +121,29 @@ namespace GameJam.Miura
                     var rotation = Quaternion.LookRotation(dir, Vector3.up);
 
                     transform.rotation = rotation;
-                });
+                })
+                .AddTo(disposables);
 
-            // Enemy ‚ðÁ‚·‚Æ‚«‚ÉŽg—p
             enemyAnimation.OnDead
                 .Subscribe(_ =>
                 {
+                    IsRemove = true;
                 })
                 .AddTo(disposables);
         }
 
-        private void Update()
+        private void UnregisterCallbacks()
         {
-            CreateAttackEffect();
-            OnMove();
+            disposables.Clear();
         }
 
         private void CreateAttackEffect()
         {
+            if (enemyAnimation.State.HasFlag(AnimationState.Dead))
+            {
+                return;
+            }
+
             if (enemyAttack.IsAttack == false)
             {
                 return;
@@ -130,6 +167,11 @@ namespace GameJam.Miura
 
         private void OnMove()
         {
+            if (enemyAnimation.State.HasFlag(AnimationState.Dead))
+            {
+                return;
+            }
+
             if (enemyAnimation.State.HasFlag(AnimationState.Move))
             {
                 float distance = (transform.position - Target.transform.position).sqrMagnitude;
@@ -191,6 +233,8 @@ namespace GameJam.Miura
 
         private Subject<Unit> deadMotionEnd;
 
+        private Subject<Unit> moveMotionStart;
+
         public enum AnimationState : byte
         {
             Idle,
@@ -208,11 +252,13 @@ namespace GameJam.Miura
 
         public EnemyAnimation(Animator animator)
         {
-            StateRp = new ReactiveProperty<AnimationState>(AnimationState.Idle);
+            StateRp = new ReactiveProperty<AnimationState>(AnimationState.Move);
 
             attackMotionEnd = new Subject<Unit>();
 
             deadMotionEnd = new Subject<Unit>();
+
+            moveMotionStart = new Subject<Unit>();
 
             OnDead = new Subject<Unit>();
 
@@ -254,7 +300,8 @@ namespace GameJam.Miura
                 .Delay(TimeSpan.FromSeconds(endTime[(int)AnimationState.Attack]))
                 .Subscribe(_ =>
                 {
-                    State = AnimationState.Move;
+                    State = AnimationState.Idle;
+                    moveMotionStart.OnNext(Unit.Default);
                 })
                 .AddTo(disposables);
 
@@ -263,6 +310,15 @@ namespace GameJam.Miura
                 .Subscribe(_ =>
                 {
                     OnDead.OnNext(Unit.Default);
+                    StateRp.Dispose();
+                })
+                .AddTo(disposables);
+
+            moveMotionStart
+                .Delay(TimeSpan.FromSeconds(1f))
+                .Subscribe(_ =>
+                {
+                    State = AnimationState.Move;
                 })
                 .AddTo(disposables);
         }

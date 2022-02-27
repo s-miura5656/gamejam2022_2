@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace GameJam
+namespace GameJam.Miura
 {
     public class MapSettings : ScriptableObject
     {
@@ -23,6 +23,7 @@ namespace GameJam
         /// </summary>
         public Vector3 EndPosition => OriginPosition + new Vector3(areaSize.x, 0, areaSize.y);
 
+#if UNITY_EDITOR
         [MenuItem("GameJam/Create/MapSettings")]
         public static void CreateAsset()
         {
@@ -35,4 +36,5 @@ namespace GameJam
             AssetDatabase.Refresh();
         }
     }
+#endif
 }
