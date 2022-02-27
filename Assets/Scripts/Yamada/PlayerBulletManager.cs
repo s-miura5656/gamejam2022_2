@@ -7,7 +7,7 @@ public class PlayerBulletManager : MonoBehaviour
 {
     //プレイヤーの玉の格納
     [SerializeField]
-    public GameObject playerBulletObject = null;
+    private GameObject playerBulletObject = null;
 
     //弾のプール
     [SerializeField]
