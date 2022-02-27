@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameJam.Miura;
@@ -22,6 +22,7 @@ public class WaveManager : MonoBehaviour
     private void Awake()
     {
         OnWaveStart = new Subject<Unit>();
+
         enemyFactoryComponent = GameObject.Find("EnemyFactory").GetComponent<EnemyFactoryComponent>();
     }
 

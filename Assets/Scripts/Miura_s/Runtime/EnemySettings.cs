@@ -56,5 +56,6 @@ namespace GameJam.Miura
         public float TargetMinDistance => targetMinDistance;
 
         public Vector3 CreatePosition => createPosition;
+
     }
 }

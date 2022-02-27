@@ -53,6 +53,7 @@ namespace GameJam.Miura
         private void Update()
         {
             OnMove();
+
             CreateAttackEffect();
         }
 

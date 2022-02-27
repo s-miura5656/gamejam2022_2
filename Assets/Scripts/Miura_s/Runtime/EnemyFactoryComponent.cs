@@ -28,7 +28,6 @@ namespace GameJam.Miura
         private void Update()
         {
             var removeEnemys = Enemys.Where(enemy => enemy.IsRemove == true);
-
             DownEnemyCount.Value += removeEnemys.Count();
 
             while (removeEnemys.Any())
