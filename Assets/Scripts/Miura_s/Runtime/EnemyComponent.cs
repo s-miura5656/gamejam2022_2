@@ -20,9 +20,9 @@ namespace GameJam.Miura
         [SerializeField]
         private MapSettings mapSettings;
 
-        private EnemyAnimation enemyAnimation;
+        private EnemyAnimation animationComponent;
 
-        private EnemyAttack enemyAttack;
+        private EnemyAttack attackComponent;
 
         private CompositeDisposable disposables;
 
@@ -38,11 +38,16 @@ namespace GameJam.Miura
 
         public bool IsRemove { get; private set; }
 
-        public List<GameObject> TargetObjects { get; private set; }
+        public List<GameObject> TargetObjects { get; internal set; }
 
         public GameObject Target => TargetObjects[targetIndex];
 
         public EnemySettings EnemySettings => enemySettings;
+
+        public void MoveStart()
+        {
+            animationComponent.State = AnimationState.Move;
+        }
 
         private void Awake()
         {
@@ -50,6 +55,7 @@ namespace GameJam.Miura
             IsDeadRp = new BoolReactiveProperty(false);
             IsRemove = false;
             moveEnd = new Subject<Unit>();
+            TargetObjects = new List<GameObject>();
         }
 
         private void Update()
@@ -61,8 +67,8 @@ namespace GameJam.Miura
 
         private void OnEnable()
         {
-            enemyAnimation = new EnemyAnimation(animator);
-            enemyAttack = new EnemyAttack(enemySettings);
+            animationComponent = new EnemyAnimation(animator);
+            attackComponent = new EnemyAttack(enemySettings);
             transform.position = enemySettings.CreatePosition;
             IsDead = false;
             IsRemove = false;
@@ -74,8 +80,8 @@ namespace GameJam.Miura
         {
             UnregisterCallbacks();
 
-            enemyAnimation = null;
-            enemyAttack = null;
+            attackComponent = null;
+            attackComponent = null;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -88,11 +94,11 @@ namespace GameJam.Miura
 
         private void RegisterCallbacks()
         {
-            enemyAttack.OnAttacked
-                .Where(_ => enemyAnimation.State != AnimationState.Dead)
+            attackComponent.OnAttacked
+                .Where(_ => animationComponent.State != AnimationState.Dead)
                 .Subscribe(_ =>
                 {
-                    enemyAnimation.State = AnimationState.Attack;
+                    animationComponent.State = AnimationState.Attack;
                 })
                 .AddTo(disposables);
 
@@ -100,11 +106,11 @@ namespace GameJam.Miura
                 .Where(value => value == true)
                 .Subscribe(value =>
                 {
-                    enemyAnimation.State = AnimationState.Dead;
+                    animationComponent.State = AnimationState.Dead;
                 })
                 .AddTo(disposables);
 
-            enemyAnimation.StateRp
+            animationComponent.StateRp
                 .Where(state => state.HasFlag(AnimationState.Move))
                 .Subscribe(state =>
                 {
@@ -131,7 +137,7 @@ namespace GameJam.Miura
                 })
                 .AddTo(disposables);
 
-            enemyAnimation.OnDead
+            animationComponent.OnDead
                 .Subscribe(_ =>
                 {
                     IsRemove = true;
@@ -146,12 +152,12 @@ namespace GameJam.Miura
 
         private void CreateAttackEffect()
         {
-            if (enemyAnimation.State.HasFlag(AnimationState.Dead))
+            if (animationComponent.State.HasFlag(AnimationState.Dead))
             {
                 return;
             }
 
-            if (enemyAttack.IsAttack == false)
+            if (attackComponent.IsAttack == false)
             {
                 return;
             }
@@ -169,17 +175,17 @@ namespace GameJam.Miura
 
             Destroy(effect, 2f);
 
-            enemyAttack.IsAttack = false;
+            attackComponent.IsAttack = false;
         }
 
         private void OnMove()
         {
-            if (enemyAnimation.State.HasFlag(AnimationState.Dead))
+            if (animationComponent.State.HasFlag(AnimationState.Dead))
             {
                 return;
             }
 
-            if (enemyAnimation.State.HasFlag(AnimationState.Move))
+            if (animationComponent.State.HasFlag(AnimationState.Move))
             {
                 float distance = (transform.position - Target.transform.position).sqrMagnitude;
 
@@ -196,7 +202,7 @@ namespace GameJam.Miura
 
                 if (transform.position == goalPosition)
                 {
-                    enemyAnimation.State = AnimationState.Idle;
+                    animationComponent.State = AnimationState.Idle;
 
                     moveEnd.OnNext(Unit.Default);
                 }
@@ -256,7 +262,7 @@ namespace GameJam.Miura
 
         public EnemyAnimation(Animator animator)
         {
-            StateRp = new ReactiveProperty<AnimationState>(AnimationState.Move);
+            StateRp = new ReactiveProperty<AnimationState>(AnimationState.Idle);
 
             attackMotionEnd = new Subject<Unit>();
 

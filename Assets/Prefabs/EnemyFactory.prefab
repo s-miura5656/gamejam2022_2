@@ -45,3 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySettings: {fileID: 11400000, guid: 18b1983ffc5bee54a8f37891954e007e, type: 2}
+  Targets:
+  - {fileID: 0}
+  - {fileID: 0}
