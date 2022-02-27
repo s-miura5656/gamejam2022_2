@@ -10,34 +10,28 @@ namespace GameJam.Miura
     public class EnemySettings : ScriptableObject
     {
         [SerializeField]
-        //[Header("デバッグ用ログの表示")]
-        private bool debugMode;
-
-        [SerializeField]
-        //[Header("遠距離の敵のプレハブ")]
+        [Header("遠距離の敵のプレハブ")]
         private GameObject rangePrefab;
 
         [SerializeField]
-        //[Header("遠距離の攻撃間隔")]
+        [Header("遠距離の攻撃間隔")]
         private float rangeAttackInterval;
 
         [SerializeField]
-        //[Header("遠距離の攻撃のエフェクト")]
+        [Header("遠距離の攻撃のエフェクト")]
         private GameObject rangeAttackEffect;
 
         [SerializeField]
-        //[Header("遠距離タイプの移動速度")]
+        [Header("遠距離タイプの移動速度")]
         private float moveSpeed;
 
         [SerializeField]
-        //[Header("標的との最小距離")]
+        [Header("標的との最小距離")]
         private float targetMinDistance;
 
         [SerializeField]
-        //[Header("生成地点（スポーン位置）")]
+        [Header("生成地点（スポーン位置）")]
         private Vector3 createPosition;
-
-        public bool DebugMode => debugMode;
 
         public GameObject RangePrefab => rangePrefab;
 

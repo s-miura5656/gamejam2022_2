@@ -193,13 +193,6 @@ namespace GameJam.Miura
 
                 transform.position = Vector3.MoveTowards(transform.position, goalPosition, enemySettings.MoveSpeed);
 
-#if UNITY_EDITOR
-                if (enemySettings.DebugMode)
-                {
-                    Debug.Log($"標的{Target.name}との距離({distance * 0.1f})");
-                }
-#endif
-
                 if (transform.position == goalPosition)
                 {
                     animationComponent.State = AnimationState.Idle;
