@@ -1037,7 +1037,7 @@ MonoBehaviour:
   maxLifePoint: 5
   lifePoint: 5
   isDead: 0
-  shotTimeTrigger: 5
+  shotTimeTrigger: 10
   shotTimeOut: 5
   movePower: 0.005
   maxLimitPosition: 5
