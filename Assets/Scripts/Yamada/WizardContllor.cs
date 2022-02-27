@@ -67,9 +67,9 @@ public class WizardContllor : MonoBehaviour
         HPUI.value = lifePoint;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if(other.gameObject.tag == "Bullet")
+        if (collision.gameObject.tag == "Bullet")
         {
             lifePoint--;
         }

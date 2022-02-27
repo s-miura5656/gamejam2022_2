@@ -1013,7 +1013,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8825186762145187256}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.32713547
   m_Height: 1.8772755
@@ -1039,7 +1039,7 @@ MonoBehaviour:
   isDead: 0
   shotTimeTrigger: 5
   shotTimeOut: 5
-  movePower: 0.02
+  movePower: 0.005
   maxLimitPosition: 5
   minLimitPosition: -5
 --- !u!1 &8825189615826380622

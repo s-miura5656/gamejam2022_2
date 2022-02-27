@@ -42,7 +42,7 @@ public class PlayerBaseBullet : BaseBullet
 
     public void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, BulletNearTargget(playerpos).transform.position, 0.1f);
+        transform.position = Vector3.MoveTowards(transform.position,new Vector3( BulletNearTargget(playerpos).transform.position.x, transform.position.y, BulletNearTargget(playerpos).transform.position.z), 0.1f);
     }
 
     private void OnTriggerEnter(Collider other)
