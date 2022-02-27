@@ -601,7 +601,7 @@ Animator:
   m_GameObject: {fileID: 8825186762145187256}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: bed7a092d53e7c748bd65db98cebf9d6, type: 3}
-  m_Controller: {fileID: 9100000, guid: 2890c9060ce4f6b45b4082d87f47b27e, type: 2}
+  m_Controller: {fileID: 9100000, guid: f693a54393ffa2d46849b415b4359716, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -638,7 +638,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBulletManager: {fileID: 0}
-  timeTrigger: 5
+  wizardAnimator: {fileID: 8875453981484734390}
+  shotTimeTrigger: 5
+  shotTimeOut: 5
+  movePower: 0.02
+  maxLimitPosition: 5
+  minLimitPosition: -5
 --- !u!1 &8825189615826380622
 GameObject:
   m_ObjectHideFlags: 0

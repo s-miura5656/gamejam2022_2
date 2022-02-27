@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx.Toolkit;
 
+//プレイヤーの弾のpoolクラス
 public class PlayerBulletPool : ObjectPool<PlayerBaseBullet>
 {
     public GameObject bulletPrefab;

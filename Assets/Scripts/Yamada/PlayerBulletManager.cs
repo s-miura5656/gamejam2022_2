@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//プレイヤーの弾のマネージャークラス
 public class PlayerBulletManager : MonoBehaviour
 {
     //プレイヤーの玉の格納
