@@ -1,19 +1,19 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//ƒvƒŒƒCƒ„[‚Ì’e‚Ìƒ}ƒl[ƒWƒƒ[ƒNƒ‰ƒX
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¼¾ã®ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚¯ãƒ©ã‚¹
 public class PlayerBulletManager : MonoBehaviour
 {
-    //ƒvƒŒƒCƒ„[‚Ì‹Ê‚ÌŠi”[
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç‰ã®æ ¼ç´
     [SerializeField]
     private GameObject playerBulletObject = null;
 
-    //’e‚Ìƒv[ƒ‹
+    //å¼¾ã®ãƒ—ãƒ¼ãƒ«
     [SerializeField]
     private PlayerBulletPool playerBulletPool;
 
-    //ƒv[ƒ‹‚ÌƒŠƒXƒg
+    //ãƒ—ãƒ¼ãƒ«ã®ãƒªã‚¹ãƒˆ
     List<PlayerBaseBullet> playerBaseBullets = new List<PlayerBaseBullet>();
     private void Start()
     {
@@ -21,7 +21,7 @@ public class PlayerBulletManager : MonoBehaviour
 
         playerBulletPool.bulletPrefab = playerBulletObject;
     }
-    //’e‚Ì¶¬
+    //å¼¾ã®ç”Ÿæˆ
     public void CreatePlayerBullet(Vector3 setpos)
     {
         PlayerBaseBullet playerBaseBullet = playerBulletPool.Rent();

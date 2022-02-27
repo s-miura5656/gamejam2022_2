@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,13 +10,13 @@ public class PlayerContllor : MonoBehaviour
     private Slider HPUI;
     [SerializeField]
     private GameObject shieldObject = null;
-    [SerializeField, Header("ƒvƒŒƒCƒ„[‚ÌÅ‘åƒ‰ƒCƒtƒ|ƒCƒ“ƒg")]
+    [SerializeField, Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æœ€å¤§ãƒ©ã‚¤ãƒ•ãƒã‚¤ãƒ³ãƒˆ")]
     public int maxLifePoint = 5;
-    [SerializeField, Header("ƒvƒŒƒCƒ„[‚Ìƒ‰ƒCƒtƒ|ƒCƒ“ƒg")]
+    [SerializeField, Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ©ã‚¤ãƒ•ãƒã‚¤ãƒ³ãƒˆ")]
     public int lifePoint = 5;
-    [SerializeField, Header("ƒvƒŒƒCƒ„[‚Ì€–S”»’è")]
+    [SerializeField, Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ­»äº¡åˆ¤å®š")]
     public bool isDead = false;
-    //ƒEƒBƒU[ƒh‚ÌˆÚ“®§ŒÀ
+    //ã‚¦ã‚£ã‚¶ãƒ¼ãƒ‰ã®ç§»å‹•åˆ¶é™
     [SerializeField]
     private float maxLimitPositionZ = 5.0f;
     [SerializeField]
@@ -29,6 +29,7 @@ public class PlayerContllor : MonoBehaviour
     {
         HPUI.value = maxLifePoint;
     }
+
     void Update()
     {
         if (Input.GetKey(KeyCode.LeftShift))

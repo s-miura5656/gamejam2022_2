@@ -1,8 +1,8 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//’e‚Ìƒ^ƒCƒv
+//å¼¾ã®ã‚¿ã‚¤ãƒ—
 public enum BulletType
 {
     NONE,

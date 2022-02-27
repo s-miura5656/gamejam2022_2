@@ -1,35 +1,35 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WizardContllor : MonoBehaviour
 {
-    //ƒoƒŒƒbƒgƒ}ƒl[ƒWƒƒ[ƒNƒ‰ƒX
-    [SerializeField,Header("ƒoƒŒƒbƒgƒ}ƒl[ƒWƒƒ[ƒNƒ‰ƒX")]
+    //ãƒãƒ¬ãƒƒãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚¯ãƒ©ã‚¹
+    [SerializeField,Header("ãƒãƒ¬ãƒƒãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚¯ãƒ©ã‚¹")]
     PlayerBulletManager playerBulletManager;
-    [SerializeField,Header("ƒAƒjƒ[ƒVƒ‡ƒ“ƒRƒ“ƒgƒ[ƒ‹")]
+    [SerializeField,Header("ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«")]
     private Animator wizardAnimator = null;
     [SerializeField, Header("HPUI")]
     private Slider HPUI;
 
-    [SerializeField, Header("ƒvƒŒƒCƒ„[‚ÌÅ‘åƒ‰ƒCƒtƒ|ƒCƒ“ƒg")]
+    [SerializeField, Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æœ€å¤§ãƒ©ã‚¤ãƒ•ãƒã‚¤ãƒ³ãƒˆ")]
     public int maxLifePoint = 5;
-    [SerializeField,Header("ƒvƒŒƒCƒ„[‚Ìƒ‰ƒCƒtƒ|ƒCƒ“ƒg")]
+    [SerializeField,Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ©ã‚¤ãƒ•ãƒã‚¤ãƒ³ãƒˆ")]
     public int lifePoint = 5;
-    [SerializeField, Header("ƒvƒŒƒCƒ„[‚Ì€–S”»’è")]
+    [SerializeField, Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ­»äº¡åˆ¤å®š")]
     public bool isDead = false;
 
-    //ˆê’èŠÔ‚²‚Æ‚É’e‚ğŒ‚‚Â•b”
-    [SerializeField,Header("ˆê’èŠÔ‚²‚Æ‚É’e‚ğŒ‚‚Â•b”")]
+    //ä¸€å®šæ™‚é–“ã”ã¨ã«å¼¾ã‚’æ’ƒã¤ç§’æ•°
+    [SerializeField,Header("ä¸€å®šæ™‚é–“ã”ã¨ã«å¼¾ã‚’æ’ƒã¤ç§’æ•°")]
     public float shotTimeTrigger = 5.0f;
-    //’e‚ÌËoŠ´Šo
-    [SerializeField, Header("’e‚ÌËoŠ´Šo")]
+    //å¼¾ã®å°„å‡ºæ„Ÿè¦š
+    [SerializeField, Header("å¼¾ã®å°„å‡ºæ„Ÿè¦š")]
     public float shotTimeOut = 5.0f;
-    //ƒEƒBƒU[ƒh‚ÌˆÚ“®‘¬“x
-    [SerializeField,Header("ƒEƒBƒU[ƒh‚ÌˆÚ“®‘¬“x")]
+    //ã‚¦ã‚£ã‚¶ãƒ¼ãƒ‰ã®ç§»å‹•é€Ÿåº¦
+    [SerializeField,Header("ã‚¦ã‚£ã‚¶ãƒ¼ãƒ‰ã®ç§»å‹•é€Ÿåº¦")]
     private float movePower = 0.02f;
-    //ƒEƒBƒU[ƒh‚ÌˆÚ“®§ŒÀ
+    //ã‚¦ã‚£ã‚¶ãƒ¼ãƒ‰ã®ç§»å‹•åˆ¶é™
     [SerializeField]
     private float maxLimitPosition = 5.0f;
     [SerializeField]

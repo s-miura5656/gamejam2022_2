@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +6,7 @@ public class HPUIRotate : MonoBehaviour
 {
     private void LateUpdate()
     {
-        //@ƒJƒƒ‰‚Æ“¯‚¶Œü‚«‚Éİ’è
+        //ã€€ã‚«ãƒ¡ãƒ©ã¨åŒã˜å‘ãã«è¨­å®š
         transform.rotation = Camera.main.transform.rotation;
     }
 }

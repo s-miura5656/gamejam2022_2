@@ -1,9 +1,9 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx.Toolkit;
 
-//ƒvƒŒƒCƒ„[‚Ì’e‚ÌpoolƒNƒ‰ƒX
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¼¾ã®poolã‚¯ãƒ©ã‚¹
 public class PlayerBulletPool : ObjectPool<PlayerBaseBullet>
 {
     public GameObject bulletPrefab;

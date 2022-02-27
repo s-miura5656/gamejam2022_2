@@ -1,15 +1,15 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//ƒvƒŒƒCƒ„[‚Ì’e‚ÌƒNƒ‰ƒX
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¼¾ã®ã‚¯ãƒ©ã‚¹
 public class PlayerBaseBullet : BaseBullet
 {
     public GameObject[] targets { get; set; }
 
-    //ƒvƒŒƒCƒ„[‚ÌˆÊ’u
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®
     public Vector3 playerpos { get; set; }
-    //©•ª‚Í”jŠü‚·‚×‚«‰»‚Ì”»’è
+    //è‡ªåˆ†ã¯ç ´æ£„ã™ã¹ãåŒ–ã®åˆ¤å®š
     public bool isdestroy { get; set; }
     public PlayerBaseBullet()
     {
@@ -17,7 +17,7 @@ public class PlayerBaseBullet : BaseBullet
         isdestroy = false;
     }
 
-    //ƒzƒXƒg‚©‚ç‹ß‚­‚Ìƒ^[ƒQƒbƒg‚ğ’T‚·
+    //ãƒ›ã‚¹ãƒˆã‹ã‚‰è¿‘ãã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’æ¢ã™
     protected GameObject BulletNearTargget(Vector3 hostpos)
     {
         targets = GameObject.FindGameObjectsWithTag("Enemy");
