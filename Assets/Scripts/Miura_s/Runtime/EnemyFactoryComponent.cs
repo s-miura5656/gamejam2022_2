@@ -20,6 +20,15 @@ namespace GameJam.Miura
 
         public ReactiveProperty<int> DownEnemyCount { get; private set; }
 
+        public void InvokeRangeEnemy()
+        {
+            var enemy = enemyFactory.Rent();
+            enemy.TargetObjects = targets;
+            enemy.MoveStart();
+
+            Enemys.Add(enemy);
+        }
+
         private void Awake()
         {
             enemyFactory = new EnemyFactory(enemySettings);
@@ -38,15 +47,6 @@ namespace GameJam.Miura
                 enemyFactory.Return(removeEnemys.ElementAt(0));
                 Enemys.Remove(removeEnemys.ElementAt(0));
             }
-        }
-
-        public void InvokeRangeEnemy()
-        {
-            var enemy = enemyFactory.Rent();
-            enemy.TargetObjects = targets;
-            enemy.MoveStart();
-
-            Enemys.Add(enemy);
         }
     }
 

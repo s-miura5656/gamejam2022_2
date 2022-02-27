@@ -12,25 +12,34 @@ namespace GameJam.Miura
     public class EnemyComponent : MonoBehaviour
     {
         [SerializeField]
-        private Animator animator;
+        protected Animator animator;
 
         [SerializeField]
-        private EnemySettings enemySettings;
+        protected EnemySettings enemySettings;
 
         [SerializeField]
-        private MapSettings mapSettings;
+        protected MapSettings mapSettings;
 
-        private EnemyAnimation animationComponent;
+        protected EnemyAnimation animationComponent;
 
-        private EnemyAttack attackComponent;
+        protected EnemyAttack attackComponent;
 
-        private CompositeDisposable disposables;
+        protected CompositeDisposable disposables;
 
-        private Vector3 goalPosition;
+        protected Vector3 movePosition;
 
-        private int targetIndex;
+        protected int targetIndex;
 
-        private Subject<Unit> moveEnd;
+        protected Subject<Unit> moveEnd;
+
+        public EnemyComponent()
+        {
+            disposables = new CompositeDisposable();
+            IsDeadRp = new BoolReactiveProperty(false);
+            IsRemove = false;
+            moveEnd = new Subject<Unit>();
+            TargetObjects = new List<GameObject>();
+        }
 
         public BoolReactiveProperty IsDeadRp { get; private set; }
 
@@ -49,23 +58,12 @@ namespace GameJam.Miura
             animationComponent.State = AnimationState.Move;
         }
 
-        private void Awake()
-        {
-            disposables = new CompositeDisposable();
-            IsDeadRp = new BoolReactiveProperty(false);
-            IsRemove = false;
-            moveEnd = new Subject<Unit>();
-            TargetObjects = new List<GameObject>();
-        }
-
-        private void Update()
+        protected virtual void Update()
         {
             OnMove();
-
-            CreateAttackEffect();
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             animationComponent = new EnemyAnimation(animator);
             attackComponent = new EnemyAttack(enemySettings);
@@ -76,15 +74,15 @@ namespace GameJam.Miura
             RegisterCallbacks();
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             UnregisterCallbacks();
 
-            attackComponent = null;
+            animationComponent = null;
             attackComponent = null;
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag("WizardAttack"))
             {
@@ -92,10 +90,9 @@ namespace GameJam.Miura
             }
         }
 
-        private void RegisterCallbacks()
+        protected virtual void RegisterCallbacks()
         {
             attackComponent.OnAttacked
-                .Where(_ => animationComponent.State != AnimationState.Dead)
                 .Subscribe(_ =>
                 {
                     animationComponent.State = AnimationState.Attack;
@@ -116,9 +113,9 @@ namespace GameJam.Miura
                 {
                     var randomObj = new System.Random();
 
-                    goalPosition = CalculationGoalPos(randomObj);
+                    movePosition = CalculationGoalPos(randomObj);
 
-                    var dir = goalPosition - transform.position;
+                    var dir = movePosition - transform.position;
                     var rotation = Quaternion.LookRotation(dir, Vector3.up);
 
                     transform.rotation = rotation;
@@ -145,64 +142,20 @@ namespace GameJam.Miura
                 .AddTo(disposables);
         }
 
-        private void UnregisterCallbacks()
+        protected virtual void UnregisterCallbacks()
         {
             disposables.Clear();
         }
 
-        private void CreateAttackEffect()
+        protected virtual void CreateAttackEffect()
         {
-            if (animationComponent.State.HasFlag(AnimationState.Dead))
-            {
-                return;
-            }
-
-            if (attackComponent.IsAttack == false)
-            {
-                return;
-            }
-
-            var forward = transform.forward * 3f;
-            var up = transform.up * 1.1f;
-
-            var position = transform.position + forward + up;
-
-            var targetPos = Target.transform.position + new Vector3(0, Target.transform.localScale.y, 0);
-            var dir = targetPos - position;
-            var rotation = Quaternion.LookRotation(dir, Vector3.up);
-
-            var effect = Instantiate(enemySettings.RangeAttackEffect, position, rotation);
-
-            Destroy(effect, 2f);
-
-            attackComponent.IsAttack = false;
         }
 
-        private void OnMove()
+        protected virtual void OnMove()
         {
-            if (animationComponent.State.HasFlag(AnimationState.Dead))
-            {
-                return;
-            }
-
-            if (animationComponent.State.HasFlag(AnimationState.Move))
-            {
-                float distance = (transform.position - Target.transform.position).sqrMagnitude;
-
-                var minDist = enemySettings.TargetMinDistance * 10;
-
-                transform.position = Vector3.MoveTowards(transform.position, goalPosition, enemySettings.MoveSpeed);
-
-                if (transform.position == goalPosition)
-                {
-                    animationComponent.State = AnimationState.Idle;
-
-                    moveEnd.OnNext(Unit.Default);
-                }
-            }
         }
 
-        private Vector3 CalculationGoalPos(System.Random randomObj)
+        protected Vector3 CalculationGoalPos(System.Random randomObj)
         {
             var pos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
@@ -292,6 +245,7 @@ namespace GameJam.Miura
                         case AnimationState.Dead:
                             animator.Play("Dead");
                             deadMotionEnd.OnNext(Unit.Default);
+                            StateRp.Dispose();
                             break;
                         default:
                             break;
@@ -313,12 +267,12 @@ namespace GameJam.Miura
                 .Subscribe(_ =>
                 {
                     OnDead.OnNext(Unit.Default);
-                    StateRp.Dispose();
                 })
                 .AddTo(disposables);
 
             moveMotionStart
                 .Delay(TimeSpan.FromSeconds(1f))
+                .Where(_ => State != AnimationState.Dead)
                 .Subscribe(_ =>
                 {
                     State = AnimationState.Move;
@@ -337,7 +291,7 @@ namespace GameJam.Miura
 
             OnAttacked = new Subject<Unit>();
 
-            IsAttack = false;
+            IsAttackRp = new BoolReactiveProperty(false);
 
             Observable
                 .Interval(TimeSpan.FromSeconds(enemySettings.RangeAttackInterval))
@@ -351,13 +305,13 @@ namespace GameJam.Miura
                 .Delay(TimeSpan.FromSeconds(0.8f))
                 .Subscribe(_ =>
                 {
-                    IsAttack = true;
+                    IsAttackRp.Value = true;
                 })
                 .AddTo(disposables);
         }
 
         public Subject<Unit> OnAttacked { get; }
 
-        public bool IsAttack { get; set; }
+        public BoolReactiveProperty IsAttackRp { get; set; }
     }
 }

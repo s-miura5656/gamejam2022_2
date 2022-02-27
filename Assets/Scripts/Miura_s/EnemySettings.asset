@@ -12,14 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b6f9690efbf73f49b0e1ece26aefb7c, type: 3}
   m_Name: EnemySettings
   m_EditorClassIdentifier: 
-  debugMode: 1
-  targets:
-  - {fileID: 5668996340668848329, guid: bfb0f01c8c3b72d498f2f6015e333932, type: 3}
-  - {fileID: 6639683003896251016, guid: edee2ce66b7654946b11fa7d687249c8, type: 3}
   rangePrefab: {fileID: 9069589363493102436, guid: ebb4c092936be8b41bf4593b935b4fb6,
     type: 3}
   rangeAttackInterval: 4
-  rangeAttackEffect: {fileID: 1136050290210760, guid: 113db6e6fdd147b4486296ad1c182dfe,
+  rangeAttackEffect: {fileID: 1136050290210760, guid: 1ffb4163de809e8478e8896ee971f8c8,
     type: 3}
   moveSpeed: 0.05
   targetMinDistance: 4
