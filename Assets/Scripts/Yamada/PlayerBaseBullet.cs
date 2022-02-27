@@ -42,10 +42,14 @@ public class PlayerBaseBullet : BaseBullet
 
     public void Update()
     {
-        if (BulletNearTargget(playerpos).transform.position == this.transform.position)
+        transform.position = Vector3.MoveTowards(transform.position, BulletNearTargget(playerpos).transform.position, 0.1f);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Enemy")
         {
             isdestroy = true;
         }
-        transform.position = Vector3.MoveTowards(transform.position, BulletNearTargget(playerpos).transform.position, 0.1f);
     }
 }

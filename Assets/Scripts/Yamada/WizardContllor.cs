@@ -5,19 +5,24 @@ using UnityEngine;
 public class WizardContllor : MonoBehaviour
 {
     //バレットマネージャークラス
-    [SerializeField]
+    [SerializeField,Header("バレットマネージャークラス")]
     PlayerBulletManager playerBulletManager;
-    [SerializeField]
+    [SerializeField,Header("アニメーションコントロール")]
     private Animator wizardAnimator = null;
 
+    [SerializeField,Header("プレイヤーのライフポイント")]
+    public int lifePoint = 5;
+    [SerializeField, Header("プレイヤーの死亡判定")]
+    public bool isDead = false;
+
     //一定時間ごとに弾を撃つ秒数
-    [SerializeField]
+    [SerializeField,Header("一定時間ごとに弾を撃つ秒数")]
     public float shotTimeTrigger = 5.0f;
     //弾の射出感覚
-    [SerializeField]
+    [SerializeField, Header("弾の射出感覚")]
     public float shotTimeOut = 5.0f;
     //ウィザードの移動速度
-    [SerializeField]
+    [SerializeField,Header("ウィザードの移動速度")]
     private float movePower = 0.02f;
     //ウィザードの移動制限
     [SerializeField]
@@ -44,6 +49,18 @@ public class WizardContllor : MonoBehaviour
         if (transform.position.z <= minLimitPosition)
         {
             movePower = -movePower;
+        }
+        if(lifePoint<= 0)
+        {
+            isDead = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Bullet")
+        {
+            lifePoint--;
         }
     }
 }
