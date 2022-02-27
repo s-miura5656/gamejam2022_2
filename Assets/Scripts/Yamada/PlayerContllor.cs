@@ -4,51 +4,88 @@ using UnityEngine;
 
 public class PlayerContllor : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
+    [SerializeField]
+    private Animator playerAnimator = null;
     void Update()
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                this.transform.Translate(-0.01f, 0.0f, 0.0f);
+                this.transform.Translate(0.0f, 0.0f, 0.01f);
+                Vector3 angle = this.transform.eulerAngles;
+                angle.y = 0.0f;
+                this.transform.eulerAngles = angle;
+                playerAnimator.SetBool("IsDush", true);
             }
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                this.transform.Translate(0.01f, 0.0f, 0.0f);
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
+            else if (Input.GetKey(KeyCode.DownArrow))
             {
                 this.transform.Translate(0.0f, 0.0f, 0.01f);
+                Vector3 angle = this.transform.eulerAngles;
+                angle.y = 180.0f;
+                this.transform.eulerAngles = angle;
+                playerAnimator.SetBool("IsDush", true);
             }
-            if (Input.GetKey(KeyCode.LeftArrow))
+            else if (Input.GetKey(KeyCode.RightArrow))
             {
-                this.transform.Translate(0.0f, 0.0f, -0.01f);
+                this.transform.Translate(0.0f, 0.0f, 0.01f);
+                Vector3 angle = this.transform.eulerAngles;
+                angle.y = 90.0f;
+                this.transform.eulerAngles = angle;
+                playerAnimator.SetBool("IsDush", true);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                this.transform.Translate(0.0f, 0.0f, 0.01f);
+                Vector3 angle = this.transform.eulerAngles;
+                angle.y = -90.0f;
+                this.transform.eulerAngles = angle;
+                playerAnimator.SetBool("IsDush", true);
+            }
+            else
+            {
+                playerAnimator.SetBool("IsSprint", false);
+                playerAnimator.SetBool("IsDush", false);
             }
         }
         else
         {
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                this.transform.Translate(-0.02f, 0.0f, 0.0f);
+                this.transform.Translate(0.0f, 0.0f, 0.02f);
+                Vector3 angle = this.transform.eulerAngles;
+                angle.y = 0.0f;
+                this.transform.eulerAngles = angle;
+                playerAnimator.SetBool("IsSprint", true);
             }
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                this.transform.Translate(0.02f, 0.0f, 0.0f);
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
+            else if (Input.GetKey(KeyCode.DownArrow))
             {
                 this.transform.Translate(0.0f, 0.0f, 0.02f);
+                Vector3 angle = this.transform.eulerAngles;
+                angle.y = 180.0f;
+                this.transform.eulerAngles = angle;
+                playerAnimator.SetBool("IsSprint", true);
             }
-            if (Input.GetKey(KeyCode.LeftArrow))
+            else if (Input.GetKey(KeyCode.RightArrow))
             {
-                this.transform.Translate(0.0f, 0.0f, -0.02f);
+                this.transform.Translate(0.0f, 0.0f, 0.02f);
+                Vector3 angle = this.transform.eulerAngles;
+                angle.y = 90.0f;
+                this.transform.eulerAngles = angle;
+                playerAnimator.SetBool("IsSprint", true);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                this.transform.Translate(0.0f, 0.0f, 0.02f);
+                Vector3 angle = this.transform.eulerAngles;
+                angle.y = -90.0f;
+                this.transform.eulerAngles = angle;
+                playerAnimator.SetBool("IsSprint", true);
+            }
+            else
+            {
+                playerAnimator.SetBool("IsSprint", false);
+                playerAnimator.SetBool("IsDush", false);
             }
         }
     }

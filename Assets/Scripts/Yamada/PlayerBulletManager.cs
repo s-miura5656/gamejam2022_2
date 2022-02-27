@@ -12,7 +12,7 @@ public class PlayerBulletManager : MonoBehaviour
     [SerializeField]
     private PlayerBulletPool playerBulletPool;
 
-
+    //プールのリスト
     List<PlayerBaseBullet> playerBaseBullets = new List<PlayerBaseBullet>();
     private void Start()
     {
@@ -20,10 +20,11 @@ public class PlayerBulletManager : MonoBehaviour
 
         playerBulletPool.bulletPrefab = playerBulletObject;
     }
-
+    //弾の生成
     public void CreatePlayerBullet(Vector3 setpos)
     {
         PlayerBaseBullet playerBaseBullet = playerBulletPool.Rent();
+        playerBaseBullet.isdestroy = false;
         playerBaseBullet.playerpos = setpos;
         playerBaseBullet.transform.position = setpos;
         playerBaseBullets.Add(playerBaseBullet);

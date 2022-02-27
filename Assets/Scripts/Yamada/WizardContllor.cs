@@ -10,12 +10,15 @@ public class WizardContllor : MonoBehaviour
     //ˆê’èŽžŠÔ‚²‚Æ‚É’e‚ðŒ‚‚Â•b”
     [SerializeField]
     public float timeTrigger = 5.0f;
+    //’e‚ÌŽËoŠ´Šo
+    [SerializeField]
+    public float timeOut = 5.0f;
     void Update()
     {
         if(Time.time > timeTrigger) {
 
             playerBulletManager.CreatePlayerBullet(this.transform.position);
-            timeTrigger = Time.time + timeTrigger;
+            timeTrigger = Time.time + timeOut;
         }
     }
 }
