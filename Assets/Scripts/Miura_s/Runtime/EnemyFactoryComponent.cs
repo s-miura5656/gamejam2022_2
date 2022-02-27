@@ -25,10 +25,6 @@ namespace GameJam.Miura
             DownEnemyCount = new ReactiveProperty<int>(0);
         }
 
-        private void Start()
-        {
-        }
-
         private void Update()
         {
             var removeEnemys = Enemys.Where(enemy => enemy.IsRemove == true);

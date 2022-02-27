@@ -15,9 +15,6 @@ public class WaveManager : MonoBehaviour
     [SerializeField]
     private SliderManager sliderManager;
 
-    /// <summary>
-    /// åªç›ÇÃWaveêî
-    /// </summary>
     public int WaveCount => enemyFactoryComponent.DownEnemyCount.Value;
 
     public Subject<Unit> OnWaveStart { get; private set; }
@@ -25,6 +22,7 @@ public class WaveManager : MonoBehaviour
     private void Awake()
     {
         OnWaveStart = new Subject<Unit>();
+        enemyFactoryComponent = GameObject.Find("EnemyFactory").GetComponent<EnemyFactoryComponent>();
     }
 
     void Start()

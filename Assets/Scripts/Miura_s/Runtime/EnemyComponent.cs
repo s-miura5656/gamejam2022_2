@@ -52,11 +52,6 @@ namespace GameJam.Miura
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                IsDead = true;
-            }
-
             OnMove();
             CreateAttackEffect();
         }
@@ -81,9 +76,9 @@ namespace GameJam.Miura
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag(""))
+            if (other.gameObject.CompareTag("WizardAttack"))
             {
-
+                IsDead = true;
             }
         }
 
