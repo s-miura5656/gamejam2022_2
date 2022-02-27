@@ -1,8 +1,11 @@
 {
     "name": "GameJam.Yamada",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "UniRx"
+    ],
     "includePlatforms": [
+        "Editor",
         "WindowsStandalone32",
         "WindowsStandalone64"
     ],
