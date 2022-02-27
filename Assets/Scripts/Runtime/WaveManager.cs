@@ -41,6 +41,7 @@ public class WaveManager : MonoBehaviour
             .AddTo(this);
 
         OnWaveStart
+            .Delay(TimeSpan.FromSeconds(2f))
             .Subscribe(_ =>
             {
                 Debug.Log("WaveStart");

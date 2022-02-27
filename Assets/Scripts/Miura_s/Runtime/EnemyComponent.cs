@@ -79,6 +79,14 @@ namespace GameJam.Miura
             enemyAttack = null;
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag(""))
+            {
+
+            }
+        }
+
         private void RegisterCallbacks()
         {
             enemyAttack.OnAttacked
