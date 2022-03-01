@@ -2,7 +2,8 @@
     "name": "GameJam.Yamada",
     "rootNamespace": "",
     "references": [
-        "UniRx"
+        "UniRx",
+        "DOTween.Modules"
     ],
     "includePlatforms": [
         "Editor",

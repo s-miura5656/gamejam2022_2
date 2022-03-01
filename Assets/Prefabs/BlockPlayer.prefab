@@ -1698,6 +1698,7 @@ GameObject:
   - component: {fileID: 3296670880794236273}
   - component: {fileID: 3212361486770747074}
   - component: {fileID: 859344073409765509}
+  - component: {fileID: 1794820696075829263}
   m_Layer: 0
   m_Name: BlockPlayer
   m_TagString: Player
@@ -1756,12 +1757,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d812e9c2347df8543845f2238ea77986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAnimator: {fileID: 3296670880794236273}
-  HPUI: {fileID: 5325214547346040641}
+  animator: {fileID: 1794820696075829263}
+  hpBar: {fileID: 5325214547346040641}
   shieldObject: {fileID: 1183025260788236108}
   maxLifePoint: 5
   lifePoint: 5
   isDead: 0
+  moveSpeed: 10
+  rotateSpeed: 25
   maxLimitPositionZ: 5
   minLimitPositionZ: -5
   maxLimitPositionX: 5
@@ -1780,6 +1783,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1794820696075829263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3211660798596093173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a932496c8a1aa54285a1673711dc636, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 3296670880794236273}
 --- !u!1 &3211704734051590047
 GameObject:
   m_ObjectHideFlags: 0
