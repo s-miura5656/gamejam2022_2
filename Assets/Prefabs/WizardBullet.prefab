@@ -19347,7 +19347,7 @@ GameObject:
   - component: {fileID: 2409037544621178104}
   - component: {fileID: 2416669142396993449}
   m_Layer: 0
-  m_Name: PlayerBullet
+  m_Name: WizardBullet
   m_TagString: WizardAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//弾のタイプ
 public enum BulletType
 {
-    NONE,
-    PLAYER_TYPE,
+    NONE = 0,
+    WIZARD_TYPE = 1,
+    RANGE = 2
 }
 
 public class BaseBullet : MonoBehaviour
 {
-    public virtual BulletType bulletType { get; set; }
+    public virtual BulletType BulletType { get; set; }
+
+    public virtual BulletPool BulletPool { get; set; }
 
     public BaseBullet()
     {
-        bulletType = BulletType.NONE;
+        BulletType = BulletType.NONE;
     }
 }
-
-

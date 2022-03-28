@@ -2,83 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// インプットマネージャークラス
-/// </summary>
 public class InputManager : SingletonMonoBehaviour<InputManager>
 {
-    //アップアローキー
-    private bool isUpArrowKey = false;
+    public bool IsUpMoveKey { get; private set; }
 
-    //ダウンアローキー
-    private bool isDownArrowKey = false;
+    public bool IsDownMoveKey { get; private set; }
 
-    //ライトアローキー
-    private bool isRightArrowKey = false;
+    public bool IsRightMoveKey { get; private set; }
 
-    //レフトアローキー
-    private bool isLeftArrowKey = false;
+    public bool IsLeftMoveKey { get; private set; }
 
-    //アップアローキーフラグの取得
-    public bool GetIsUpArrowKey
-    {
-        get { return isUpArrowKey; }
-    }
-
-    //ダウンアローキーフラグの取得
-    public bool GetIsDownArrowKey
-    {
-        get { return isDownArrowKey; }
-    }
-
-    //ライトアローキーフラグの取得
-    public bool GetIsRightArrowKey
-    {
-        get { return isRightArrowKey; }
-    }
-
-    //レフトアローキーフラグの取得
-    public bool GetIsLeftArrowKey
-    {
-        get { return isLeftArrowKey; }
-    }
+    public bool IsShieldKey { get; private set; }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            isUpArrowKey = true;
-        }
-        else
-        {
-            isUpArrowKey = false;
-        }
+        IsUpMoveKey = Input.GetKey(KeyCode.UpArrow) | Input.GetKey(KeyCode.W);
 
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            isDownArrowKey = true;
-        }
-        else
-        {
-            isDownArrowKey = false;
-        }
+        IsDownMoveKey = Input.GetKey(KeyCode.DownArrow) | Input.GetKey(KeyCode.S);
 
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            isRightArrowKey = true;
-        }
-        else
-        {
-            isRightArrowKey = false;
-        }
+        IsRightMoveKey = Input.GetKey(KeyCode.RightArrow) | Input.GetKey(KeyCode.D);
 
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            isLeftArrowKey = true;
-        }
-        else
-        {
-            isLeftArrowKey = false;
-        }
+        IsLeftMoveKey = Input.GetKey(KeyCode.LeftArrow) | Input.GetKey(KeyCode.A);
+
+        IsShieldKey = Input.GetKey(KeyCode.LeftShift);
     }
 }

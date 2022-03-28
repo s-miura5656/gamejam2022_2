@@ -2,42 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// プレイヤーのアニメーションクラス
-/// </summary>
 public class PlayerAnimation : MonoBehaviour
 {
-    //プレイヤーのアニメーションコントローラー
+    private readonly string AnimeDash = "IsDash";
+
+    private readonly string AnimeWalk = "IsWalk";
+
     [SerializeField]
     private Animator animator = null;
 
-    //走るアニメーション
-    private const string animeDash = "IsDash";
+    public bool IsAnimeDash { get; set; }
 
-    //ジャンプアニメーション
-    private const string animeWalk = "IsWalk";
-
-    //ダッシュアニメのフラグ
-    private bool isAnimeDash = false;
-
-    //歩行のアニメのフラグ
-    private bool isAnimeWalk = false;
-
-    //ダッシュアニメのフラグのセッター
-    public bool SetIsAnimeDash
-    {
-        set { isAnimeDash = value; }
-    }
-
-    //歩行のアニメのフラグのセッター
-    public bool SetAnimeWalk
-    {
-        set { isAnimeWalk = value; }
-    }
+    public bool IsAnimeWalk { get; set; }
 
     private void Update()
     {
-        animator.SetBool(animeDash, isAnimeDash);
-        animator.SetBool(animeWalk, isAnimeWalk);
+        animator.SetBool(AnimeDash, IsAnimeDash);
+        animator.SetBool(AnimeWalk, IsAnimeWalk);
     }
 }

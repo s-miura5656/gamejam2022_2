@@ -3,145 +3,100 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// プレイヤーのコントローラー
-/// </summary>
 public class Player : MonoBehaviour
 {
-    //アニメーター
     [SerializeField]
     private PlayerAnimation animator = null;
 
-    //体力バー
     [SerializeField]
     private Slider hpBar = null;
 
-    //シールド
     [SerializeField]
     private GameObject shieldObject = null;
 
-    [SerializeField, Header("プレイヤーの最大ライフポイント")]
-    private int maxLifePoint = 5;
-
-    [SerializeField, Header("プレイヤーのライフポイント")]
-    private int lifePoint = 5;
-
-    [SerializeField, Header("プレイヤーの死亡判定")]
-    private bool isDead = false;
-
-    [SerializeField, Header("プレイヤーの移動速度")]
-    private float moveSpeed = 50.0f;
-
-    [SerializeField, Header("プレイヤーの回転速度")]
-    private float rotateSpeed = 25.0f;
-
-    #region プレイヤーの移動制限
-
     [SerializeField]
-    private float maxLimitPositionZ = 5.0f;
+    private PlayerStatusAsset playerStatus = null;
 
-    [SerializeField]
-    private float minLimitPositionZ = -5.0f;
-
-    [SerializeField]
-    private float maxLimitPositionX = 5.0f;
-
-    [SerializeField]
-    private float minLimitPositionX = -5.0f;
-
-    #endregion
-
-    /// <summary>
-    /// 初期動作
-    /// </summary>
     private void Start()
     {
-        hpBar.value = maxLifePoint;
+        hpBar.value = playerStatus.GetMaxLifePoint;
     }
 
-    /// <summary>
-    /// アップデート
-    /// </summary>
     private void Update()
     {
-        Move();
+        var direction = GetPlayerInputDirection();
+        var isLeftShiftKey = InputManager.Instance.IsShieldKey;
+        shieldObject.SetActive(isLeftShiftKey);
 
+        if (Vector3.zero == direction)
+        {
+            animator.IsAnimeWalk = false;
+            animator.IsAnimeDash = false;
+
+            return;
+        }
+
+        MovePlayer(direction, isLeftShiftKey);
         MoveLimit();
     }
 
-    /// <summary>
-    /// コリジョンの当たり判定
-    /// </summary>
-    /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            lifePoint--;
-            hpBar.value = lifePoint;
+            playerStatus.LifePoint--;
+            hpBar.value = playerStatus.LifePoint;
         }
     }
 
     /// <summary>
-    /// プレイヤー移動
+    /// プレイヤーのインプット方向
     /// </summary>
-    private void Move()
+    private Vector3 GetPlayerInputDirection()
     {
-        var isLeftShiftKey = Input.GetKey(KeyCode.LeftShift);
-
-        shieldObject.SetActive(isLeftShiftKey);
 
         var moveDirection = Vector3.zero;
 
-        if (InputManager.Instance.GetIsUpArrowKey)
+        if (InputManager.Instance.IsUpMoveKey)
         {
             moveDirection += Vector3.forward;
         }
-        else if (InputManager.Instance.GetIsDownArrowKey)
+        else if (InputManager.Instance.IsDownMoveKey)
         {
             moveDirection += Vector3.back;
         }
 
-        if (InputManager.Instance.GetIsRightArrowKey)
+        if (InputManager.Instance.IsRightMoveKey)
         {
             moveDirection += Vector3.right;
         }
-        else if (InputManager.Instance.GetIsLeftArrowKey)
+        else if (InputManager.Instance.IsLeftMoveKey)
         {
             moveDirection += Vector3.left;
         }
 
-        if (Vector3.zero == moveDirection)
-        {
-            animator.SetAnimeWalk = false;
-            animator.SetIsAnimeDash = false;
-        }
-        else
-        {
-            MoveCharacter(moveDirection.normalized, rotateSpeed, isLeftShiftKey);
-        }
+        return moveDirection.normalized;
     }
 
     /// <summary>
     /// キャラクターの移動関数
     /// </summary>
     /// <param name="moveDirection"></param>
-    /// <param name="rotateSpeed"></param>
     /// <param name="isLeftShiftKey"></param>
-    private void MoveCharacter(Vector3 moveDirection ,float rotateSpeed,bool isLeftShiftKey)
+    private void MovePlayer(Vector3 moveDirection ,bool isLeftShiftKey)
     {
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        transform.position += moveDirection * playerStatus.GetMoveSpeed * Time.deltaTime;
 
         var look = Quaternion.LookRotation(moveDirection);
-        transform.rotation = Quaternion.Lerp(transform.rotation, look, Time.deltaTime * rotateSpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, look, Time.deltaTime * playerStatus.GetRotateSpeed);
 
         if (isLeftShiftKey)
         {
-            animator.SetAnimeWalk = true;
+            animator.IsAnimeWalk = true;
         }
         else
         {
-            animator.SetIsAnimeDash = true;
+            animator.IsAnimeDash = true;
         }
     }
 
@@ -150,8 +105,8 @@ public class Player : MonoBehaviour
     /// </summary>
     private void MoveLimit()
     {
-        var limitX = Mathf.Clamp(transform.position.x, minLimitPositionX, maxLimitPositionX);
-        var limitZ = Mathf.Clamp(transform.position.z, minLimitPositionZ, maxLimitPositionZ);
+        var limitX = Mathf.Clamp(transform.position.x, playerStatus.GetMinLimitPositionX, playerStatus.GetMaxLimitPositionX);
+        var limitZ = Mathf.Clamp(transform.position.z, playerStatus.GetMinLimitPositionZ, playerStatus.GetMaxLimitPositionZ);
         transform.position = new Vector3(limitX, transform.position.y, limitZ);
     }
 }
